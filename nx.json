@@ -1,0 +1,96 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "npmScope": "dfs-invest-flow",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e", "type-check"]
+      }
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/.eslintignore"
+      ]
+    },
+    "test": {
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/jest.config.ts",
+        "{workspaceRoot}/jest.preset.js"
+      ]
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"]
+    }
+  },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "libs"
+  },
+  "generators": {
+    "@nx/js:library": {
+      "buildable": true,
+      "publishable": false,
+      "importPath": "@dfs-invest-flow/{projectName}"
+    },
+    "@nx/nest:application": {
+      "strict": true,
+      "unitTestRunner": "jest"
+    },
+    "@nx/next:application": {
+      "style": "css",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "playwright"
+    },
+    "@nx/react:library": {
+      "unitTestRunner": "jest",
+      "bundler": "vite"
+    }
+  },
+  "projects": {
+    "api": {
+      "tags": ["scope:api", "type:app", "framework:nest"]
+    },
+    "web": {
+      "tags": ["scope:web", "type:app", "framework:next"]
+    },
+    "domain": {
+      "tags": ["scope:domain", "type:lib", "layer:domain"]
+    },
+    "application": {
+      "tags": ["scope:application", "type:lib", "layer:application"]
+    },
+    "infrastructure": {
+      "tags": ["scope:infrastructure", "type:lib", "layer:infrastructure"]
+    },
+    "shared": {
+      "tags": ["scope:shared", "type:lib", "layer:shared"]
+    }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      }
+    }
+  ]
+}

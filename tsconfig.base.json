@@ -1,0 +1,47 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "useUnknownInCatchVariables": true,
+    "noUncheckedIndexedAccess": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "sourceMap": true,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "noEmit": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@dfs-invest-flow/application/*": ["libs/application/src/*"],
+      "@dfs-invest-flow/domain/*": ["libs/domain/src/*"],
+      "@dfs-invest-flow/infrastructure/*": ["libs/infrastructure/src/*"],
+      "@dfs-invest-flow/shared": ["libs/shared/src/index.ts"],
+      "@dfs-invest-flow/shared/*": ["libs/shared/src/*"]
+    }
+  },
+  "include": [],
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "dist",
+    ".nx",
+    "coverage",
+    ".git",
+    ".husky"
+  ]
+}

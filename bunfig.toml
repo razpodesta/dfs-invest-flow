@@ -1,0 +1,15 @@
+# Asegura instalaciones 100% reproducibles usando bun.lockb
+# Directiva: DFS-DEP-002-P2 (Asumiendo Aprobación)
+[install]
+frozenLockfile = false
+
+# --- Opciones Adicionales Opcionales (Considerar si son necesarias) ---
+# [test]
+# preload = ["./test/setup.ts"] # Preload script for tests
+# coverage = true
+
+# [run]
+# env = { "NODE_ENV" = "development" } # Default env vars for 'bun run'
+
+# [log]
+# level = "debug" # Set log level (debug, info, warn, error)

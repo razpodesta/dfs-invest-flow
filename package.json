@@ -1,0 +1,89 @@
+{
+  "name": "@dfs-invest-flow/source",
+  "version": "0.0.0",
+  "license": "MIT",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "nx run-many --target=build",
+    "lint": "nx run-many --target=lint",
+    "lint:fix": "nx run-many --target=lint --fix",
+    "test": "nx run-many --target=test",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml,html,css,scss}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml,html,css,scss}\"",
+    "type-check": "nx run-many --target=type-check",
+    "check:schema": "ajv validate -s ./docs/01_Governance/directives.schema.json -d ./docs/01_Governance/directives.v1.0.json --all-errors",
+    "commit": "cz",
+    "prepare": "husky install"
+  },
+  "private": true,
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yaml,yml,html,css,scss}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@eslint/js": "^9.25.1",
+    "@nx/eslint": "20.8.1",
+    "@nx/eslint-plugin": "20.8.1",
+    "@nx/jest": "20.8.1",
+    "@nx/js": "20.8.1",
+    "@nx/playwright": "20.8.1",
+    "@swc-node/register": "~1.9.1",
+    "@swc/core": "~1.5.7",
+    "@swc/helpers": "~0.5.11",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "18.16.9",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "ajv-cli": "^5.0.0",
+    "ajv-formats": "^3.0.1",
+    "bun-types": "latest",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-perfectionist": "^4.12.3",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-sonarjs": "^3.0.2",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "jest-environment-node": "^29.7.0",
+    "jsonc-eslint-parser": "^2.1.0",
+    "lint-staged": "^15.5.1",
+    "nx": "20.8.1",
+    "playwright": "^1.52.0",
+    "prettier": "^3.5.3",
+    "ts-jest": "^29.1.0",
+    "ts-node": "10.9.1",
+    "tslib": "^2.3.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.19.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "packageManager": "bun@1.2.11",
+  "dependencies": {}
+}
