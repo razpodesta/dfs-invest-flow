@@ -1,8 +1,36 @@
+# dependencies
 node_modules
+
+# output
 dist
 build
-.nx
-coverage
-tmp
-*.lock
+out
+*.tgz
+
+# caches
+.nx/cache
+.eslintcache
+.cache
+*.tsbuildinfo
+
+# logs
+logs
+*.log
+report.*.json
+
+# env
+.env*
+!.env.example
+
+# lockfiles
 bun.lockb
+package-lock.json
+pnpm-lock.yaml
+
+# OS generated
+.DS_Store
+
+# Ignorar documentación y schema
+.docs/ 
+.vscode/
+scripts/

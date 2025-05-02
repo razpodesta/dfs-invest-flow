@@ -2,9 +2,15 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "commonjs",
-    "moduleResolution": "node10",
+    "module": "CommonJS", // Mantenemos CommonJS para Jest
     "types": ["jest", "node"]
   },
-  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": [
+    // --- CORRECCIÓN AQUÍ ---
+    "jest.config.cjs", // Apuntar al archivo .cjs (Asumimos que existirá o se creará uno aquí si tiene tests)
+    // --- FIN CORRECCIÓN ---
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ]
 }

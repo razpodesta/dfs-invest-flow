@@ -1,5 +1,6 @@
 {
-  "extends": "./tsconfig.base.json",
+  // Corregido: Apuntar a la base de la raíz
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "ESNext",
     "forceConsistentCasingInFileNames": true,

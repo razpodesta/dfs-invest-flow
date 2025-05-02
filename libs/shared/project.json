@@ -19,14 +19,23 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/shared/**/*.ts", "libs/shared/**/*.tsx"]
+        "lintFilePatterns": ["libs/shared/**/*.ts", "libs/shared/**/*.tsx"],
+        "parserOptions": {
+          "project": ["libs/shared/tsconfig.lib.json", "libs/shared/tsconfig.spec.json"]
+        }
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/shared/jest.config.ts"
+        "jestConfig": "libs/shared/jest.config.cjs"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p {projectRoot}/tsconfig.lib.json"
       }
     }
   }

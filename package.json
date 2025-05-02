@@ -1,10 +1,10 @@
 {
   "name": "@dfs-invest-flow/source",
-  "version": "0.0.0",
-  "license": "MIT",
-  "module": "index.ts",
+  "version": "2.1.0",
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
+    "nx": "nx",
     "build": "nx run-many --target=build",
     "lint": "nx run-many --target=lint",
     "lint:fix": "nx run-many --target=lint --fix",
@@ -12,9 +12,14 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml,html,css,scss}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml,html,css,scss}\"",
     "type-check": "nx run-many --target=type-check",
-    "check:schema": "ajv validate -s ./docs/01_Governance/directives.schema.json -d ./docs/01_Governance/directives.v1.0.json --all-errors",
+    "check:schema": "ajv validate -s ./.docs/01_Governance/directives.schema.json -d ./.docs/01_Governance/directives.v1.0.json -c ajv-formats --all-errors",
     "commit": "cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "graph": "nx graph",
+    "show:projects": "nx show projects",
+    "affected:lint": "nx affected --target=lint",
+    "affected:test": "nx affected --target=test",
+    "affected:build": "nx affected --target=build"
   },
   "private": true,
   "lint-staged": {
@@ -31,7 +36,6 @@
     "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.25.1",
     "@nx/eslint": "20.8.1",
-    "@nx/eslint-plugin": "20.8.1",
     "@nx/jest": "20.8.1",
     "@nx/js": "20.8.1",
     "@nx/playwright": "20.8.1",
@@ -79,13 +83,12 @@
     "typescript": "^5.0.0"
   },
   "workspaces": [
-    "packages/*"
+    "libs/*"
   ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "packageManager": "bun@1.2.11",
-  "dependencies": {}
+  "packageManager": "bun@1.2.11"
 }

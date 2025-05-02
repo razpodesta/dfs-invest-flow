@@ -15,7 +15,6 @@
         "assets": ["libs/application/*.md"]
       }
     },
-
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
@@ -24,6 +23,12 @@
         "parserOptions": {
           "project": ["libs/application/tsconfig.lib.json", "libs/application/tsconfig.spec.json"]
         }
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p {projectRoot}/tsconfig.lib.json"
       }
     }
   }
