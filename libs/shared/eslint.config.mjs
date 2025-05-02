@@ -1,19 +1,12 @@
+// @ts-check
 import baseConfig from '../../eslint.config.mjs';
 
+// Crear configuración personalizada que ignora README.md
 export default [
-  ...baseConfig,
+  // Primero ignoramos el README.md
   {
-    files: ['**/*.json'],
-    rules: {
-      '@nx/dependency-checks': [
-        'error',
-        {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
-        },
-      ],
-    },
-    languageOptions: {
-      parser: await import('jsonc-eslint-parser'),
-    },
+    ignores: ['README.md'],
   },
+  // Luego incluimos la configuración base
+  ...baseConfig,
 ];

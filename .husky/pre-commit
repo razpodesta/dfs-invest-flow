@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+# . "$(dirname -- "$0")/_/husky.sh" # Comentado o eliminado según recomendación Husky v9+
+
+# Intentar ejecutar directamente con 'bun', asumiendo que Corepack lo hace disponible
+echo "Running pre-commit hook..."
+bun lint-staged
+
+# Capturar el código de salida
+exitCode=$?
+
+if [ $exitCode -ne 0 ]; then
+  echo "Husky > pre-commit hook failed (bun lint-staged). Trying with npx..." >&2
+  # Si falla 'bun', intentar con 'npx bun' como fallback
+  npx bun lint-staged
+  exitCode=$?
+  if [ $exitCode -ne 0 ]; then
+      echo "Husky > pre-commit hook failed with both 'bun' and 'npx bun'." >&2
+      exit $exitCode
+  fi
+fi
+
+echo "Husky > pre-commit hook passed."
+exit 0

@@ -1,0 +1,1 @@
+-- Este archivo contiene la estructura SQL para migraciones manuales si es necesario

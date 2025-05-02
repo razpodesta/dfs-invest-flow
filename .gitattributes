@@ -1,0 +1,13 @@
+# Directiva: DFS-GIT-001-P3 - Configuración para forzar finales de línea LF
+* text=auto eol=lf
+
+# Archivos binarios que no deben ser modificados
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.ttf binary
+*.woff binary
+*.woff2 binary

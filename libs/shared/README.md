@@ -1,11 +1,9 @@
-# shared
+# Shared Library
 
-This library was generated with [Nx](https://nx.dev).
+A library for shared utilities and helper functions.
 
-## Building
+## Usage
 
-Run `nx build shared` to build the library.
-
-## Running unit tests
-
-Run `nx test shared` to execute the unit tests via [Jest](https://jestjs.io).
+```typescript
+import { shared } from '@dfs-invest-flow/shared';
+```

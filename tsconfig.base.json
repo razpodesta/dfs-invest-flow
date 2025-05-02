@@ -34,14 +34,6 @@
       "@dfs-invest-flow/shared/*": ["libs/shared/src/*"]
     }
   },
-  "include": [],
-  "exclude": [
-    "node_modules",
-    "tmp",
-    "dist",
-    ".nx",
-    "coverage",
-    ".git",
-    ".husky"
-  ]
+  "include": ["globals.d.ts"],
+  "exclude": ["node_modules", "tmp", "dist", ".nx", "coverage", ".git", ".husky"]
 }

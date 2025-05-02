@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # PostgreSQL: Base de datos principal
+  postgres:
+    image: postgres:15-alpine
+    container_name: dfs_postgres
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-dfs_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dfs_password}
+      POSTGRES_DB: ${POSTGRES_DB:-dfs_invest_flow}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-dfs_user} -d ${POSTGRES_DB:-dfs_invest_flow}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dfs_network
+
+  # Redis: Caché, colas y pub/sub
+  redis:
+    image: redis:7-alpine
+    container_name: dfs_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --save 60 1 --loglevel warning
+    ports:
+      - '${REDIS_PORT:-6379}:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dfs_network
+
+networks:
+  dfs_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:

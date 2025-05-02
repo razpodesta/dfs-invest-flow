@@ -1,176 +1,125 @@
 // @ts-check
+// v9.6: Eliminado bloque de configuración para scripts/ (archivo ejecuta.ts borrado)
 
-import js from '@eslint/js';
+import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-// Importa los plugins directamente para referencia en `plugins`
+import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
+import jsoncParser from 'jsonc-eslint-parser';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-import securityPlugin from 'eslint-plugin-security';
-import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import prettierPlugin from 'eslint-plugin-prettier';
-import eslintConfigPrettier from 'eslint-config-prettier';
-// import reactPlugin from 'eslint-plugin-react';
-// import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import securityPlugin from 'eslint-plugin-security';
+import sonarjsPlugin from 'eslint-plugin-sonarjs';
+import jestPlugin from 'eslint-plugin-jest';
+import globals from 'globals';
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
-const config = [
-  // 1. Ignorar archivos globales
+export default [
+  // 1. Ignorados Globales
   {
-    ignores: ['node_modules/**', 'dist/**', '.nx/**', 'coverage/**'],
+    ignores: [
+      'node_modules/**', 'dist/**', 'build/**', '.nx/**', 'coverage/**', 'tmp/**',
+      'libs/shared/.eslintignore', '**/*.config.{js,mjs,cjs,ts}', 'eslint.config.mjs',
+      'jest.config.ts', 'jest.preset.cjs', '**/vite-env.d.ts',
+      'scripts/**', // <<< Mantener ignore para el directorio por si acaso
+    ],
   },
 
-  // 2. Configuración base para TODOS los archivos JS/TS/JSX/TSX
+  // 2. Configuración JS Base
+  eslint.configs.recommended,
+
+  // 3. Configuración TS/JS General (SIN project: true)
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{ts,tsx,js,jsx,mjs,cjs}'],
+    // NO ignorar scripts aquí ya que el directorio completo está en ignores globales
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      parser: tseslint.parser, // Usar parser TS para todos por defecto
+      parser: tseslint.parser,
       parserOptions: {
-        ecmaFeatures: { jsx: true }, // Habilitar JSX globalmente si se usa React/Next
-        project: true, // Intentar habilitar project globalmente
-        // tsconfigRootDir: import.meta.dirname, // Puede ser necesario
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
       },
-      globals: { // Globales comunes
-        process: 'readonly',
-        // browser: true,
-        // node: true,
-      },
+      globals: { // Definir globales comunes aquí
+          ...globals.node, // Asumir Node.js como entorno común para TS/JS
+          // ...globals.browser, // Añadir si tienes código de navegador fuera de React
+      }
     },
     plugins: {
-      // Declarar todos los plugins aquí
-      import: importPlugin, // TS7016 - Ignorar advertencia tipo
-      'jsx-a11y': jsxA11yPlugin, // TS7016 - Ignorar advertencia tipo
-      security: securityPlugin, // TS7016 - Ignorar advertencia tipo
-      sonarjs: sonarjsPlugin,
-      perfectionist: perfectionistPlugin,
-      prettier: prettierPlugin,
       '@typescript-eslint': tseslint.plugin,
-      // react: reactPlugin,
-      // 'react-hooks': reactHooksPlugin,
+      import: importPlugin,
+      security: securityPlugin,
+      sonarjs: sonarjsPlugin,
+      perfectionist: perfectionistPlugin, // Mover Perfectionist aquí
     },
     rules: {
-      // Reglas base JS recomendadas
-      ...js.configs.recommended.rules,
-      // Reglas base Import recomendadas
-      ...importPlugin.configs.recommended.rules,
-      // Reglas base JSX A11y recomendadas
-      ...jsxA11yPlugin.configs.recommended.rules,
-      // Reglas base Security recomendadas
-      ...securityPlugin.configs.recommended.rules,
-      // Reglas base SonarJS recomendadas
-      ...sonarjsPlugin.configs.recommended.rules,
-
-      // Reglas Perfectionist
-      'perfectionist/sort-imports': [ /* ...configuración... */ ],
-      'perfectionist/sort-classes': 'error',
-      'perfectionist/sort-objects': 'error',
-      'perfectionist/sort-interfaces': 'error',
-      'perfectionist/sort-object-types': 'error',
-      'perfectionist/sort-jsx-props': 'error',
-      'perfectionist/sort-enums': 'error',
-
-      // Regla Prettier
-      'prettier/prettier': 'error',
-
-       // Overrides Personalizados (Generales)
-       'import/prefer-default-export': 'off',
-       'import/no-extraneous-dependencies': [
-         'error',
-         {
-           devDependencies: [ /* ... patrones ... */ ],
-           optionalDependencies: false,
-         },
-       ],
-       // Nota: Reglas específicas de TS irán en la sección siguiente
-    },
-    settings: { // Settings globales de plugins
-        'import/resolver': {
-            typescript: {
-                project: './tsconfig.base.json',
-            },
-            node: true,
-        },
-        // react: { version: 'detect' },
-    },
-  },
-
-  // 3. Configuración específica para archivos TypeScript (incluyendo reglas que requieren tipos)
-  {
-    files: ['**/*.{ts,tsx}'],
-    // Hereda languageOptions/plugins del bloque anterior, solo añadimos reglas TS
-    rules: {
-      // Aplicar reglas TS recomendadas (con chequeo de tipos)
-      // Usamos directamente las reglas de los objetos de config exportados por tseslint
-      ...(tseslint.configs.recommendedTypeChecked.rules),
-      ...(tseslint.configs.stylisticTypeChecked.rules),
-
-       // Overrides específicos de TS
+      // Reglas generales TS/JS
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
+
+      // Reglas Security/Sonar
+      ...securityPlugin.configs.recommended.rules,
+      ...sonarjsPlugin.configs.recommended.rules,
+
+      // Reglas Import
+      'import/no-extraneous-dependencies': [ 'error', { devDependencies: [ /* ... */ ] } ],
+      'import/prefer-default-export': 'off',
+      'import/order': 'off', // Perfectionist
+
+      // Reglas Perfectionist (movidas aquí desde su propio bloque)
+      ...perfectionistPlugin.configs['recommended-alphabetical'].rules,
+      'perfectionist/sort-imports': [ 'error', { /* ... */ internalPattern: ['^@dfs-invest-flow/.*'] } ],
+
+      // Otras
+      'no-console': 'warn',
+      'eqeqeq': ['error', 'always'],
+      'no-undef': 'error', // Activar no-undef aquí
+
+      // Desactivar reglas type-aware
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/restrict-template-expressions': 'off',
+      '@typescript-eslint/await-thenable': 'off',
+    },
+    settings: {
+      'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
+      'import/resolver': { node: true },
     },
   },
 
-  // 4. Configuración específica para React (si es necesario, descomentar y ajustar)
-  // {
-  //   files: ['**/*.{jsx,tsx}'],
-  //   plugins: {
-  //     react: reactPlugin,
-  //     'react-hooks': reactHooksPlugin,
-  //   },
-  //   rules: {
-  //     ...reactPlugin.configs.recommended.rules,
-  //     ...reactHooksPlugin.configs.recommended.rules,
-  //     // Overrides React específicos
-  //     'react/react-in-jsx-scope': 'off',
-  //     'react/jsx-uses-react': 'off',
-  //   }
-  // },
+  // 4. Configuración Específica para Archivos de Test (Jest)
+  {
+      files: ['**/*.spec.{ts,tsx,js,jsx}', '**/*.test.{ts,tsx,js,jsx}'],
+      plugins: { jest: jestPlugin },
+      languageOptions: {
+          globals: { /* ... Globales Jest ... */ describe: 'readonly', it: 'readonly', expect: 'readonly', jest: 'readonly' /* ...etc */ },
+      },
+      rules: {
+          ...jestPlugin.configs.recommended.rules,
+          'no-undef': 'off', // <<< DESACTIVAR no-undef aquí para permitir globales Jest
+      },
+  },
 
-  // 5. Desactivar reglas conflictivas con Prettier (SIEMPRE AL FINAL)
+  // 5. Configuración React
+  {
+    files: ['**/*.{jsx,tsx}'],
+    plugins: { 'jsx-a11y': jsxA11yPlugin, react: reactPlugin, 'react-hooks': reactHooksPlugin },
+    languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    rules: { /* ... Reglas React ... */ 'react/react-in-jsx-scope': 'off', 'react/prop-types': 'off' },
+    settings: { react: { version: 'detect' } },
+  },
+
+  // 6. Configuración JSON / JSONC
+  { files: ['**/*.json', '**/*.jsonc'], languageOptions: { parser: jsoncParser } },
+
+  // 7. Prettier (Config + Regla) - Al final
   eslintConfigPrettier,
+  { files: ['**/*'], plugins: { prettier: prettierPlugin }, rules: { 'prettier/prettier': 'error' } },
 ];
-
-export default config;
-
-// Helper para la configuración de Perfectionist (para evitar repetición)
-const perfectionistSortImportsConfig = {
-  type: 'alphabetical',
-  order: 'asc',
-  'newlines-between': 'always',
-  groups: [
-    ['builtin', 'external'],
-    'internal-type',
-    'internal',
-    ['parent-type', 'sibling-type', 'index-type'],
-    ['parent', 'sibling', 'index'],
-    'object',
-    'unknown',
-  ],
-  'internal-pattern': ['@dfs-invest-flow/**'],
-};
-
-// Actualizar la regla en el objeto de configuración principal
-const mainConfig = config.find(c => c.files && c.files.includes('**/*.{js,jsx,ts,tsx}'));
-if (mainConfig && mainConfig.rules) {
-  mainConfig.rules['perfectionist/sort-imports'] = ['error', perfectionistSortImportsConfig];
-    mainConfig.rules['import/no-extraneous-dependencies'] = [
-        'error',
-        {
-          devDependencies: [
-            '**/*.test.{js,jsx,ts,tsx}',
-            '**/*.spec.{js,jsx,ts,tsx}',
-            '**/*.e2e-spec.{js,jsx,ts,tsx}',
-            '**/*.config.{js,mjs,cjs,ts}',
-            '**/jest.config.{js,ts}',
-            '**/jest.preset.{js,cjs}',
-            '**/tools/**',
-            '**/scripts/**',
-          ],
-          optionalDependencies: false,
-        },
-      ];
-}

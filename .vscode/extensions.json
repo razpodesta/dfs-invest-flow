@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "prisma.prisma",
+    "mikestead.dotenv",
+    "nrwl.angular-console",
+    "formulahendry.auto-rename-tag",
+    "streetsidesoftware.code-spell-checker",
+    "ms-azuretools.vscode-docker",
+    "editorconfig.editorconfig",
+    "usernamehw.errorlens",
+    "github.vscode-github-actions",
+    "orta.vscode-jest",
+    "pkief.material-icon-theme",
+    "christian-kohler.path-intellisense",
+    "arcanis.vscode-zipfs"
+  ]
+}
