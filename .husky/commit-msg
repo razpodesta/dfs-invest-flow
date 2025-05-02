@@ -1,4 +1,16 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# . "$(dirname -- "$0")/_/husky.sh" # Comentar o eliminar esta línea
 
+# Añadir un mensaje de log (opcional)
+echo "Husky > Running commit-msg hook..."
+
+# Ejecutar commitlint
+# Intentar directamente con bunx (suele funcionar bien con corepack)
 bunx commitlint --edit $1
+
+# Capturar código de salida y salir con él
+exitCode=$?
+if [ $exitCode -ne 0 ]; then
+  echo "Husky > commit-msg hook failed (commitlint)." >&2
+fi
+exit $exitCode

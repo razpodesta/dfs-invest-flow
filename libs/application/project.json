@@ -14,6 +14,17 @@
         "tsConfig": "libs/application/tsconfig.lib.json",
         "assets": ["libs/application/*.md"]
       }
+    },
+
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/application/**/*.ts", "libs/application/**/*.tsx"],
+        "parserOptions": {
+          "project": ["libs/application/tsconfig.lib.json", "libs/application/tsconfig.spec.json"]
+        }
+      }
     }
   }
 }
