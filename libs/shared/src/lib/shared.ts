@@ -1,7 +1,6 @@
 // ./libs/shared/src/lib/shared.ts
-function shared(): string {
-  return 'shared';
-}
+// Contenido comentado eliminado.
 
-module.exports = { shared };
+// Mantener placeholder si es necesario para NX/build
+export const placeholderShared = true;
 // ./libs/shared/src/lib/shared.ts

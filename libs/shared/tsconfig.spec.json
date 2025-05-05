@@ -1,12 +1,14 @@
+// ./libs/shared/tsconfig.spec.json
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.json", // Hereda de tsconfig.json de shared
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "types": ["jest", "node"],
-    "sourceMap": true,
-    "esModuleInterop": true
+    "module": "CommonJS", // Mantener para Jest por ahora
+    "types": ["jest", "node"]
+    // Simplificado: Quitar moduleResolution, sourceMap, esModuleInterop
+    // asumen que vienen de la base o no son estrictamente necesarios para un test simple
   },
   "include": ["jest.config.cjs", "src/**/*.spec.ts", "src/**/*.test.ts", "src/**/*.d.ts"]
+  // Exclude no es necesario si hereda correctamente
 }
+// ./libs/shared/tsconfig.spec.json

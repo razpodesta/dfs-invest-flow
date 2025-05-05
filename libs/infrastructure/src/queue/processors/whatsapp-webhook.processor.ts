@@ -4,12 +4,11 @@ import type { Job } from 'bullmq';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
-import { QUALIFY_LEAD_USE_CASE, TRACK_INTERACTION_USE_CASE } from '@dfs-invest-flow/application';
 import type { IQualifyLeadUseCase, ITrackInteractionUseCase } from '@dfs-invest-flow/application';
 
+import { QUALIFY_LEAD_USE_CASE, TRACK_INTERACTION_USE_CASE } from '@dfs-invest-flow/application';
 
 import { WHATSAPP_WEBHOOK_QUEUE } from '../constants/queue.constants';
-
 
 @Injectable()
 @Processor(WHATSAPP_WEBHOOK_QUEUE)
@@ -47,7 +46,7 @@ export class WhatsappWebhookProcessor extends WorkerHost {
         this.logger.log(
           `[Job ${job.id}] Detected status update for ${status.recipient_id}: ${status.status}. Processing status update...`,
         );
-        // Corregido: Comentario placeholder eliminado para satisfacer sonarjs/todo-tag
+        // **LÍNEA CON COMENTARIO ELIMINADA**
         this.logger.log(`[Job ${job.id}] Placeholder: Status update processed.`);
       } else {
         this.logger.warn(`[Job ${job.id}] Unhandled webhook event type or structure.`);
