@@ -9,26 +9,40 @@
       }
     }
   },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": ["default"],
+    "sharedGlobals": [
+      "{workspaceRoot}/bun.lockb",
+      "{workspaceRoot}/package.json",
+      "{workspaceRoot}/tsconfig.base.json",
+      "{workspaceRoot}/nx.json",
+      "{workspaceRoot}/eslint.config.mjs",
+      "{workspaceRoot}/.prettierrc",
+      "{workspaceRoot}/jest.preset.cjs"
+    ]
+  },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "inputs": ["default", "^production", "sharedGlobals"],
+      "outputs": ["{options.outputPath}"]
     },
     "lint": {
-      "inputs": ["default", "{workspaceRoot}/eslint.config.js", "{workspaceRoot}/.eslintignore"]
+      "inputs": ["default", "{workspaceRoot}/eslint.config.mjs"]
     },
     "test": {
+      "dependsOn": ["^build"],
       "inputs": [
         "default",
         "^production",
-        "{workspaceRoot}/jest.config.ts",
-        "{workspaceRoot}/jest.preset.js"
+        "sharedGlobals",
+        "{workspaceRoot}/jest.config.cjs",
+        "{workspaceRoot}/jest.preset.cjs"
       ]
     },
-    "@nx/js:tsc": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^default"]
+    "type-check": {
+      "inputs": ["default", "sharedGlobals"]
     }
   },
   "workspaceLayout": {
@@ -56,37 +70,12 @@
     }
   },
   "projects": {
-    "api": {
-      "tags": ["scope:api", "type:app", "framework:nest"]
-    },
-    "web": {
-      "tags": ["scope:web", "type:app", "framework:next"]
-    },
-    "domain": {
-      "tags": ["scope:domain", "type:lib", "layer:domain"]
-    },
-    "application": {
-      "tags": ["scope:application", "type:lib", "layer:application"]
-    },
-    "infrastructure": {
-      "tags": ["scope:infrastructure", "type:lib", "layer:infrastructure"]
-    },
-    "shared": {
-      "tags": ["scope:shared", "type:lib", "layer:shared"]
-    }
+    "api": { "tags": ["scope:api", "type:app", "framework:nest"] },
+    "api-e2e": {},
+    "domain": { "tags": ["scope:domain", "type:lib", "layer:domain"] },
+    "application": { "tags": ["scope:application", "type:lib", "layer:application"] },
+    "infrastructure": { "tags": ["scope:infrastructure", "type:lib", "layer:infrastructure"] },
+    "shared": { "tags": ["scope:shared", "type:lib", "layer:shared"] }
   },
-  "plugins": [
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
-    {
-      "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      }
-    }
-  ]
+  "nxCloudId": "68163e8c82a54f6d0216fba5"
 }

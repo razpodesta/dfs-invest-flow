@@ -1,0 +1,18 @@
+{
+  "name": "@dfs-invest-flow/api",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@dfs-invest-flow/application": "*",
+    "@dfs-invest-flow/infrastructure": "*",
+    "@nestjs/common": "*",
+    "@nestjs/config": "*",
+    "@nestjs/core": "*",
+    "@nestjs/event-emitter": "*",
+    "@nestjs/platform-express": "*",
+    "@nestjs/bullmq": "*",
+    "tslib": "*"
+  },
+  "devDependencies": {}
+}

@@ -1,5 +1,4 @@
-version: '3.8'
-
+# CORREGIDO: Eliminada la línea 'version: "3.8"'
 services:
   # PostgreSQL: Base de datos principal
   postgres:
@@ -9,14 +8,20 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
+      # Usar los valores por defecto o leer de .env
       POSTGRES_USER: ${POSTGRES_USER:-dfs_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dfs_password}
       POSTGRES_DB: ${POSTGRES_DB:-dfs_invest_flow}
     ports:
+      # Mapear al puerto definido en .env o default 5432
       - '${POSTGRES_PORT:-5432}:5432'
     healthcheck:
       test:
-        ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-dfs_user} -d ${POSTGRES_DB:-dfs_invest_flow}']
+        # Usar los mismos valores de USER y DB que en environment
+        [
+          'CMD-SHELL',
+          'pg_isready -U $${POSTGRES_USER:-dfs_user} -d $${POSTGRES_DB:-dfs_invest_flow}',
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -32,7 +37,8 @@ services:
       - redis_data:/data
     command: redis-server --appendonly yes --save 60 1 --loglevel warning
     ports:
-      - '${REDIS_PORT:-6379}:6379'
+      # Mapear al puerto definido en .env o default 6969 (el que liberamos)
+      - '${REDIS_PORT:-6969}:6379'
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 10s

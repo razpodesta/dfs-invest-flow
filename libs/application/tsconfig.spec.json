@@ -2,14 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "CommonJS", // Mantenemos CommonJS para Jest
-    "types": ["jest", "node"]
+    "module": "CommonJS",
+    "types": ["jest", "node"],
+    "isolatedModules": false,
+    "esModuleInterop": true
   },
-  "include": [
-    "jest.config.cjs",
-    // --- FIN CORRECCIÓN ---
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ]
+  "include": ["jest.config.cjs", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
 }

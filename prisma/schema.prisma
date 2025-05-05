@@ -1,27 +1,25 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// WhatsApp Account Model (para el sistema Anti-Ban)
-model WhatsAppAccount {
-  id                String   @id @default(uuid())
-  phoneNumber       String   @unique
-  qualityRating     Float    @default(100.0) // 0-100 escala de calidad
-  healthScore       Float    @default(100.0) // 0-100 escala de salud
-  status            String   @default("HEALTHY") // HEALTHY, WARN, BLOCKED
-  messagingLimitTier String   @default("STANDARD") // STANDARD, ELEVATED, REDUCED 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  @@map("whatsapp_accounts")
+generator client {
+  provider = "prisma-client-js"
 }
 
-// TODO: Añadir modelos para Lead, LeadInteraction, LeadAssignment, User, etc.
+model WhatsAppAccount {
+  id                   String    @id @unique @default(cuid())
+  phoneNumber          String    @unique
+  displayName          String?
+  qualityRatingTier    String?
+  messagingLimitTier   String?
+  healthScore          Int       @default(100)
+  status               String    @default("HEALTHY")
+  isActive             Boolean   @default(true)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  lastHealthUpdateAt   DateTime  @default(now())
+
+  @@index([status, isActive])
+  @@index([healthScore])
+}

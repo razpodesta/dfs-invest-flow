@@ -1,30 +1,19 @@
-/* eslint-env node */
 'use strict';
-
-// Directiva: DFS-GIT-002-P2
-// Estándar Conventional Commits v1.0.0
 module.exports = {
   extends: ['@commitlint/config-conventional'],
-  // Regla scope-enum con la lista de scopes válidos para el monorepo
   rules: {
     'scope-enum': [
       2,
       'always',
       [
-        'core',
-        'shared',
-        'infra',
-        'api',
-        'web',
-        'repo',
-        'deps',
-        'ci',
-        'docs',
-        'test',
-        'config',
-        'release',
-        'security',
+        'api', 'web',
+        'domain', 'application', 'infrastructure', 'shared', 'core',
+        'anti-ban', 'leads', 'whatsapp', 'persistence', 'cache', 'queue',
+        'ai', 'crm', 'ads', 'properties', 'users', 'auth', 'analytics',
+        'config', 'repo', 'build', 'deps', 'docs', 'test', 'ci', 'lekb',
+        'release', 'security', 'refactor', 'style', 'perf', 'revert', 'wip',
       ],
     ],
   },
 };
+

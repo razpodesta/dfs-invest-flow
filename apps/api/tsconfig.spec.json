@@ -1,0 +1,17 @@
+// ./apps/api/tsconfig.app.json (Verificar/Corregir)
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "module": "ESNext",
+    "types": ["node"],
+    "emitDecoratorMetadata": true,
+    "target": "ES2021"
+    // "sourceMap": true // Podría ser útil añadir
+  },
+  "exclude": ["jest.config.cjs", "src/**/*.spec.ts", "src/**/*.test.ts"], // <-- Este exclude está BIEN aquí
+  "include": ["src/**/*.ts"] // <-- Este include está BIEN aquí
+}
+
+
+// ./apps/api/tsconfig.app.json

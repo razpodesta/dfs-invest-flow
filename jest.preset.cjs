@@ -2,46 +2,52 @@
 const nxPreset = require('@nx/jest/preset').default;
 const { pathsToModuleNameMapper } = require('ts-jest');
 const fs = require('fs');
+const path = require('path');
 const ts = require('typescript');
 
-// Función auxiliar para leer tsconfig.base.json de forma segura
 function readTsConfigBasePaths(rootDir) {
-  const tsconfigPath = require('path').join(rootDir, 'tsconfig.base.json');
-  try {
-    const tsconfigContent = fs.readFileSync(tsconfigPath, 'utf8');
-    const tsconfigObject = ts.parseConfigFileTextToJson(tsconfigPath, tsconfigContent);
-    if (tsconfigObject.error) {
-      console.error('Error parsing tsconfig.base.json for Jest:', tsconfigObject.error);
-      return {};
-    }
-    return tsconfigObject.config?.compilerOptions?.paths || {};
-  } catch (error) {
-    console.error('Error reading tsconfig.base.json for Jest:', error);
-    return {};
+  const tsConfigPath = path.join(rootDir, 'tsconfig.base.json');
+  if (!fs.existsSync(tsConfigPath)) return undefined;
+  const tsConfig = ts.readConfigFile(tsConfigPath, ts.sys.readFile);
+  if (tsConfig.error) {
+    console.error('Error reading tsconfig.base.json:', tsConfig.error);
+    return undefined;
   }
+  return tsConfig.config?.compilerOptions?.paths;
 }
-
-// Obtener los paths desde la raíz real del workspace
-const paths = readTsConfigBasePaths(__dirname); // __dirname debería ser la raíz aquí
+const paths = readTsConfigBasePaths(__dirname);
+const moduleNameMapper = pathsToModuleNameMapper(paths || {}, { prefix: '<rootDir>/../../' });
 
 module.exports = {
   ...nxPreset,
   transform: {
-    // Usar ts-jest, pero apuntando al tsconfig.spec.json DENTRO de cada proyecto
-    // ts-jest usará <rootDir> que se resuelve a la raíz del proyecto específico (ej: libs/shared)
-    '^.+\\.(ts|tsx)?$': [
-      'ts-jest',
-      {
-        // Apuntar al tsconfig.spec.json del proyecto que se está testeando
-        tsconfig: '<rootDir>/tsconfig.spec.json', // <-- CORRECCIÓN CLAVE
-        isolatedModules: true,
-      },
-    ],
+    '^.+\\.(ts|tsx)?$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
-  // Mapear alias usando los paths leídos del tsconfig.base.json RAÍZ
-  moduleNameMapper: pathsToModuleNameMapper(paths, {
-    prefix: '<rootDir>/../../', // <-- Prefijo ajustado para salir de libs/shared y llegar a la raíz
-    // Alternativa si el prefijo anterior falla: calcular ruta absoluta
-    // prefix: require('path').resolve(__dirname) + '/',
-  }),
+  moduleNameMapper: moduleNameMapper,
+  testMatch: ['**/+(*.)+(spec|test|integration-spec).[tj]s?(x)'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+
+  collectCoverage: true,
+  coverageReporters: ['json', 'lcov', 'text', 'clover', 'html'],
+  collectCoverageFrom: [
+    'libs/**/*.{ts,tsx}',
+    '!libs/**/index.ts',
+    '!libs/**/*.module.ts',
+    '!libs/**/*.config.ts',
+    '!libs/**/*.dto.ts',
+    '!libs/**/*.enum.ts',
+    '!libs/**/*.interface.ts',
+    '!libs/**/*.port.ts',
+    '!libs/**/*.constants.ts',
+    '!libs/**/*.mock.ts',
+    '!libs/**/prisma.service.ts',
+    '!**/*.spec.ts',
+    '!**/*.test.ts',
+    '!**/*.integration-spec.ts',
+  ],
+  testEnvironment: 'node',
+  clearMocks: true,
+  resetMocks: true,
+  restoreMocks: true,
+  errorOnDeprecated: true,
 };

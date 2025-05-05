@@ -2,13 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "ESNext", // <<< Restaurado a ESNext
-    "types": ["jest", "node"]
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "types": ["jest", "node"],
+    "sourceMap": true,
+    "esModuleInterop": true
   },
-  "include": [
-    "jest.config.cjs", // <<< Restaurado a .ts
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ]
+  "include": ["jest.config.cjs", "src/**/*.spec.ts", "src/**/*.test.ts", "src/**/*.d.ts"]
 }

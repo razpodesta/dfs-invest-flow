@@ -6,6 +6,21 @@
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "dependencies": {
-    "tslib": "^2.3.0"
+    "@dfs-invest-flow/domain": "*",
+    "@dfs-invest-flow/application": "*",
+    "@prisma/client": "*",
+    "bullmq": "*",
+    "ioredis": "*",
+    "rate-limiter-flexible": "*",
+    "tslib": "*",
+    "@nestjs/common": "*",
+    "@nestjs/config": "*",
+    "@nestjs/event-emitter": "*",
+    "@nestjs/bullmq": "*",
+    "@nestjs/axios": "*"
+  },
+  "devDependencies": {
+    "@jest/globals": "*",
+    "@testcontainers/redis": "*"
   }
 }

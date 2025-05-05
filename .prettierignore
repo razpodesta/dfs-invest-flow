@@ -1,36 +1,30 @@
-# dependencies
+# ./.prettierignore (Contenido Corregido)
 node_modules
-
-# output
 dist
 build
-out
-*.tgz
-
-# caches
-.nx/cache
-.eslintcache
-.cache
-*.tsbuildinfo
-
-# logs
-logs
-*.log
-report.*.json
-
-# env
-.env*
-!.env.example
-
-# lockfiles
 bun.lockb
-package-lock.json
-pnpm-lock.yaml
+# Comentar o eliminar la siguiente línea si se desea formatear .docs/
+# .docs/
+coverage
+.nx/cache
+.nx/workspace-data
+*.tgz
+*.log
+.env
+.env.*.local
 
-# OS generated
-.DS_Store
+# Docs / Build artifacts
+.docs
+LICENSE
+*.md
 
-# Ignorar documentación y schema
-.docs/ 
-.vscode/
+# Prisma generated files (client handled by node_modules ignore)
+# prisma/generated
+
+# Generated Graph files
+dependency-graph.html
+static/
+
+
 scripts/
+
