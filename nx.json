@@ -26,10 +26,12 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["default", "^production", "sharedGlobals"],
-      "outputs": ["{options.outputPath}"]
+      "outputs": ["{options.outputPath}"],
+      "cache": true
     },
     "lint": {
-      "inputs": ["default", "{workspaceRoot}/eslint.config.mjs"]
+      "inputs": ["default", "{workspaceRoot}/eslint.config.mjs"],
+      "cache": true
     },
     "test": {
       "dependsOn": ["^build"],
@@ -39,10 +41,12 @@
         "sharedGlobals",
         "{workspaceRoot}/jest.config.cjs",
         "{workspaceRoot}/jest.preset.cjs"
-      ]
+      ],
+      "cache": true
     },
     "type-check": {
-      "inputs": ["default", "sharedGlobals"]
+      "inputs": ["default", "sharedGlobals"],
+      "cache": true
     }
   },
   "workspaceLayout": {
